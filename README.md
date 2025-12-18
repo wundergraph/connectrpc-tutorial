@@ -86,7 +86,6 @@ query GetEmployeeById($id: Int!) {
     }
     tag
     updatedAt
-    startDate
   }
 }
 EOF
@@ -116,8 +115,8 @@ EOF
 
 ```shell
 cat << 'EOF' > services/UpdateEmployeeMood.graphql
-mutation UpdateEmployeeMood($employeeID: Int!, $mood: Mood!) {
-  updateMood(employeeID: $employeeID, mood: $mood) {
+mutation UpdateEmployeeMood($id: Int!, $mood: Mood!) {
+  updateMood(employeeID: $id, mood: $mood) {
     id
     currentMood
     derivedMood
@@ -295,13 +294,78 @@ INFO connectrpc/server.go:198 ConnectRPC server ready {... , "addr": "127.0.0.1:
 
 TODO
 
-### 3a. curl
+### 3a. `curl`
 
-TODO
+GetEmployees (POST)
+```shell
+curl -X POST http://localhost:5026/employees.v1.HrService/GetEmployees \
+  -H "Content-Type: application/json" \
+  -H "Connect-Protocol-Version: 1" \
+  -d '{}'
+```
 
-### 3b. grpcurl
+GetEmployees (GET)
+```shell
+ curl --get \
+  --data-urlencode 'encoding=json' \
+  --data-urlencode 'message={}' \
+  --data-urlencode 'connect=v1' \
+  http://localhost:5026/employees.v1.HrService/GetEmployees
+```
 
-TODO
+GetEmployeeById (POST)
+```shell
+curl -X POST http://localhost:5026/employees.v1.HrService/GetEmployeeById \
+    -H "Content-Type: application/json" \
+    -H "Connect-Protocol-Version: 1" \
+    -d '{"id": 1}'         
+```
+
+GetEmployeeById (GET)
+```shell
+curl --get \
+  --data-urlencode 'encoding=json' \
+  --data-urlencode 'message={"id": 1}' \
+  --data-urlencode 'connect=v1' \
+  http://localhost:5026/employees.v1.HrService/GetEmployeeById
+```
+
+UpdateEmployeeMood (POST)
+```shell
+curl -X POST http://localhost:5026/employees.v1.HrService/UpdateEmployeeMood \
+    -H "Content-Type: application/json" \
+    -H "Connect-Protocol-Version: 1" \
+    -d '{"id": 1, "mood": "HAPPY"}'
+```
+
+### 3b. `grpcurl`
+
+GetEmployees
+```shell
+grpcurl -plaintext \
+  -proto ./services/service.proto \
+  -d '{}' \
+  localhost:5026 \
+  employees.v1.HrService/GetEmployees
+```
+
+GetEmployeeById
+```shell
+grpcurl -plaintext \
+  -proto ./services/service.proto \
+  -d '{"id": 1}' \
+  localhost:5026 \
+  employees.v1.HrService/GetEmployeeById
+```
+
+UpdateEmployeeMood
+```shell
+grpcurl -plaintext \
+  -proto ./services/service.proto \
+  -d '{"id": 1, "mood": "HAPPY"}' \
+  localhost:5026 \
+  employees.v1.HrService/UpdateEmployeeMood
+```
 
 ### 3c. Generating OpenAPI
 
