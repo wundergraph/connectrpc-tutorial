@@ -58,8 +58,6 @@ Teams consuming APIs who want to:
 
 ## 0. Pre Requisites
 
-**⏱️ Time Required: 5 minutes** (assuming Cosmo is already set up)
-
 For this project, we will assume that you have already onboarded onto Cosmo, and have the demo subgraphs and federated graph up and running
 as per our onboarding documentation [Cosmo Cloud Onboarding](https://cosmo-docs.wundergraph.com/getting-started/cosmo-cloud-onboarding).
 
@@ -73,8 +71,6 @@ as per our onboarding documentation [Cosmo Cloud Onboarding](https://cosmo-docs.
 - [ ] You have a valid `GRAPH_API_TOKEN`
 
 ## 1. Operations to Proto
-
-**⏱️ Time Required: 10-15 minutes**
 
 For your convenience, we have copied the federated graph schema into [`schema.graphqls`](./schema.graphqls).
 
@@ -246,8 +242,6 @@ ls -1 services/
 ```
 
 ## 2. ConnectRPC Server
-
-**⏱️ Time Required: 5-10 minutes**
 
 We have pre-prepared a [`connect.config.yaml`](./connect.config.yaml) file for you which turns on ConnectRPC Server mode on the router.
 
