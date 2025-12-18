@@ -248,7 +248,14 @@ Key docker command flags:
 Inspecting the router logs, we should see:
 
 ```text
-TODO
+INFO core/router.go:873 GraphQL schema coverage metrics enabled {... }
+INFO connectrpc/service_discovery.go:127 discovered service {... , "full_name": "employees.v1.HrService", "package": "employees.v1", "service": "HrService", "dir": "./services", "proto_files": 1, "operation_files": 3}
+INFO connectrpc/service_discovery.go:148 service discovery complete {... , "total_services": 1, "services_dir": "./services"}
+INFO connectrpc/operation_registry.go:130 loaded operations for service {... , "service": "employees.v1.HrService", "operation_count": 3}
+INFO connectrpc/vanguard_service.go:118 registering services {... , "package_count": 1, "service_count": 1, "total_methods": 3}
+INFO core/router.go:1033 ConnectRPC server ready {... , "listen_addr": "localhost:5026", "services": 1, "operations": 3}
+INFO core/router.go:1054 Serving GraphQL playground {... , "url": "http://localhost:3002/"}
+INFO connectrpc/server.go:198 ConnectRPC server ready {... , "addr": "127.0.0.1:5026"}
 ```
 
 ## 3. Consuming the API
