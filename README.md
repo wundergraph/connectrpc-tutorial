@@ -292,7 +292,9 @@ INFO connectrpc/server.go:198 ConnectRPC server ready {... , "addr": "127.0.0.1:
 
 ## 3. Consuming the API
 
-TODO
+At this point, the GraphQL operations you authored have been compiled into a stable, strongly typed ConnectRPC service and are being served by the Cosmo Router. From the perspective of an API consumer, GraphQL is no longer part of the picture - the API now behaves like a conventional gRPC or HTTP service with well-defined request and response contracts.
+
+In this section, we'll explore several different ways to interact with the same API surface, all backed by the exact same GraphQL operations:
 
 ### 3a. `curl`
 
