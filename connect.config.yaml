@@ -1,0 +1,16 @@
+version: "1"
+
+listen_addr: "localhost:3002"
+graphql_path: "/graphql"
+
+connect_rpc:
+  enabled: true
+  server:
+    listen_addr: "localhost:5026"
+  services_provider_id: "fs-services"
+  graphql_endpoint: "http://localhost:3002/graphql"
+
+storage_providers:
+  file_system:
+    - id: "fs-services"
+      path: "./services"
