@@ -3,6 +3,93 @@
 
 ---
 
+## The Problem
+
+GraphQL is a powerful API design and composition layer. It gives platform teams strong typing, a single source of truth, and the ability to evolve schemas over time without breaking consumers. For many organizations, it is the right way to design and operate internal APIs.
+
+However, GraphQL is not universally consumable. Many API consumers rely on REST, RPC, OpenAPI, or generated SDKs, or operate in environments where constructing GraphQL queries is difficult or impractical. In other cases, corporate governance or security policies explicitly prohibit exposing GraphQL at the edge. As a result, teams are often forced to either expose GraphQL directly and push its complexity onto every consumer, or reimplement the same API multiple times using different protocols — duplicating logic, contracts, and ongoing maintenance.
+
+## Our approach: GraphQL as the source of truth, RPC as the interface
+
+ConnectRPC in Cosmo keeps GraphQL at the center, but removes the need for API consumers to use it directly.
+
+Instead of replacing GraphQL or exposing it as-is, Cosmo uses GraphQL Trusted Documents as the API contract and makes them available through other protocols. Platform teams continue to design and run their APIs in GraphQL, while consumers interact with the same API using their protocol of choice.
+
+You define Trusted Documents - named and versioned GraphQL queries and mutations. Cosmo helps you turn these operations into:
+
+- Protocol Buffer definitions
+- Typed RPC endpoints
+- HTTP/JSON APIs
+- Generated SDKs
+- OpenAPI specifications
+
+Your existing GraphQL schema, resolvers, and federated setup stay the same.
+
+```mermaid
+flowchart LR
+    subgraph Clients["API Consumers"]
+        A1[HTTP / JSON]
+        A2[gRPC / ConnectRPC]
+        A3[Typed SDKs]
+        A4[OpenAPI Clients]
+    end
+
+    subgraph Router["Cosmo Router"]
+        direction TB
+        B1[Trusted Operations]
+        B2[Protocol Translation]
+        B3[Federated Graph]
+    end
+
+    subgraph Graph["GraphQL Services"]
+        direction TB
+        C1[Subgraph A]
+        C2[Subgraph B]
+        C3[Subgraph C]
+    end
+
+    A1 --> Router
+    A2 --> Router
+    A3 --> Router
+    A4 --> Router
+
+    B1 --> B2
+    B2 --> B3
+    Router --> Graph
+```
+
+Cosmo Router acts as as a mediation layer in front of your graph:
+
+- It maps incoming RPC or HTTP requests to trusted GraphQL operations
+- It executes those operations against your existing graph
+- It returns results in the format and type system each consumer expects
+
+## Why this matters
+
+This approach makes it easier to serve different teams from one GraphQL graph:
+
+**One API, multiple interfaces** 
+
+You keep one GraphQL API, and Cosmo exposes it through HTTP/JSON, ConnectRPC, SDKs, and OpenAPI - without rebuilding the same functionality in new services.
+
+**Strong types for consumers**
+
+Consumers get typed clients and generated code, without needing to learn GraphQL or build queries by hand.
+
+**Safer by default**
+
+Only the operations you approve are exposed. This avoids "run any query" access and makes performance and data access more predictable.
+
+**Easier to evolve**
+
+Trusted operations act like stable API contracts. You can review, version, and update them as your schema changes.
+
+**Fits existing workflows**
+
+Platform teams keep using GraphQL. Consumers can keep using tools like Postman, REST/RPC workflows, and standard code generators.
+
+With the above context in mind, let's walk through how to expose an existing GraphQL API in Cosmo as a ConnectRPC service.
+
 ## What You'll Learn
 
 This tutorial teaches you how to expose an existing GraphQL API in Cosmo as a ConnectRPC Service, without rewriting resolvers or changing your underlying Graph.
