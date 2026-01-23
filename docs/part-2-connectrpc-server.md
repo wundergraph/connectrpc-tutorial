@@ -35,7 +35,8 @@ connect_rpc:
   enabled: true
   server:
     listen_addr: "localhost:5026"
-  services_provider_id: "fs-services"
+  storage:
+    provider_id: "fs-services"
   graphql_endpoint: "http://localhost:3002/graphql"
 
 storage_providers:
@@ -48,7 +49,7 @@ storage_providers:
 
 - `connect_rpc.enabled: true` - Turns on ConnectRPC server mode
 - `server.listen_addr` - The address where the ConnectRPC server will listen (port 5026)
-- `services_provider_id` - References the storage provider that contains your proto files
+- `storage.provider_id` - References the storage provider that contains your proto files
 - `graphql_endpoint` - The GraphQL endpoint that will execute the operations
 - `storage_providers.file_system` - Configures the router to load services from the `./services` directory
 
